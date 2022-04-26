@@ -29,34 +29,41 @@ def lowest_cost_to_fin(graph,costs,parents,processed):
         lowest_cost_node = find_lowest_cost_node(costs,processed)
     return costs,parents
 
-def update_parents(graph, parents):
+def creat_parents(graph, parents):
     for g_node in graph:
         for gg_node in graph[g_node]:
-            parents[gg_node] = g_node
+            parents[gg_node] = None
     return parents
 
-def update_costs(graph,parents,costs):
+def creat_costs(parents,costs):
     for p_node in parents:
         costs[p_node] = float('inf')
-    search_node = 'start'
-    costs['start'] = 0
-    while True:
-        for s_node in parents:
-            if search_node == parents[s_node]:
-                costs[s_node] = graph[search_node][s_node] + costs[search_node]
-                search_node = s_node
-        if costs['fin'] != float('inf'):
-            break
-
     return costs
 
-graph = {'start':{'A':5,'B':2},'A':{'C':4,'D':2},'B':{'A':8,'D':7},'C':{'D':6,'fin':3},'D':{'fin':1},'fin':{}}
+graph = {'start':{'A':1,'B':2,'C':1},
+         'A':{'D':3,'E':4},
+         'B':{'A':2,'E':6},
+         'C':{'E':8,'F':2},
+         'D':{'G':7},
+         'E':{'G':6,'H':8,'J':5},
+         'F':{'J':3},
+         'G':{'H':2,'fin':9},
+         'H':{'fin':1},
+         'J':{'fin':2},
+         'fin':{}
+         }
 parents = {}
-update_parents(graph,parents)
+creat_parents(graph,parents)
 costs = {}
-update_costs(graph,parents,costs)
-print(costs,'\n',parents,'\n')
+creat_costs(parents,costs)
 
+costs['A'] = 1
+costs['B'] = 2
+costs['C'] = 1
+parents['A'] = 'start'
+parents['B'] = 'start'
+parents['C'] = 'start'
+print('costs:',costs,'\n','parents:',parents,'\n')
 processed = ['start']
 lowest_cost_to_fin(graph,costs,parents,processed)
-print(costs,'\n',parents)
+print('costs:',costs,'\n','parents:',parents,'\n')
